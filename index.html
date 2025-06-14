@@ -459,21 +459,18 @@
             <h2 class="text-center mb-5">Свържете се с нас</h2>
             <div class="row">
                 <div class="col-lg-6 mx-auto">
-                    <form class="contact-form" action="https://formsubmit.co/pavelabushev@yahoo.com" method="POST">
-                        <!-- Honeypot -->
-                        <input type="text" name="_honey" style="display:none">
-                        <!-- Disable Captcha -->
-                        <input type="hidden" name="_captcha" value="false">
-                        <!-- Success Page -->
-                        <input type="hidden" name="_next" value="https://geshome.bg/thanks.html">
+                    <form class="contact-form" action="https://formspree.io/f/xovwwedd" method="POST">
                         <div class="mb-3">
-                            <input type="text" name="name" class="form-control" placeholder="Вашето име" required>
+                            <label for="name" class="form-label">Вашето име</label>
+                            <input type="text" name="name" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <input type="email" name="email" class="form-control" placeholder="Вашият имейл" required>
+                            <label for="email" class="form-label">Вашият имейл</label>
+                            <input type="email" name="email" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <textarea name="message" class="form-control" rows="5" placeholder="Вашето съобщение" required></textarea>
+                            <label for="message" class="form-label">Вашето съобщение</label>
+                            <textarea name="message" class="form-control" rows="5" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Изпрати</button>
                         <div class="d-flex gap-2 mt-3">
