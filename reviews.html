@@ -133,22 +133,22 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Начало</a>
+                        <a class="nav-link" href="index">Начало</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html#services">Услуги</a>
+                        <a class="nav-link" href="index#services">Услуги</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html#about">За нас</a>
+                        <a class="nav-link" href="index#about">За нас</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="calculator.html">Калкулатор</a>
+                        <a class="nav-link" href="calculator">Калкулатор</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="reviews.html">Отзиви</a>
+                        <a class="nav-link active" href="reviews">Отзиви</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="faq.html">ЧЗВ</a>
+                        <a class="nav-link" href="faq">ЧЗВ</a>
                     </li>
                 </ul>
             </div>
@@ -163,7 +163,7 @@
             <!-- Форма за добавяне на отзив -->
             <div class="review-form">
                 <h3 class="mb-4">Добавете ваш отзив</h3>
-                <form id="reviewForm" action="submit_review.php" method="POST">
+                <form id="reviewForm" method="POST">
                     <div class="mb-3">
                         <label for="name" class="form-label">Вашето име</label>
                         <input type="text" class="form-control" id="name" name="name" required>
@@ -251,7 +251,56 @@
         }
 
         // Зареждане на отзивите при зареждане на страницата
-        document.addEventListener('DOMContentLoaded', loadReviews);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadReviews();
+
+            // Добавяне на обработка на формата
+            const reviewForm = document.getElementById('reviewForm');
+            reviewForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+
+                fetch('submit_review.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Създаване на съобщение
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = `alert alert-${data.success ? 'success' : 'danger'} alert-dismissible fade show mt-3`;
+                    alertDiv.innerHTML = `
+                        ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+
+                    // Добавяне на съобщението преди формата
+                    reviewForm.parentNode.insertBefore(alertDiv, reviewForm);
+
+                    // Ако отзивът е успешен, изчистване на формата и презареждане на отзивите
+                    if (data.success) {
+                        reviewForm.reset();
+                        loadReviews();
+                    }
+
+                    // Автоматично скриване на съобщението след 5 секунди
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 5000);
+                })
+                .catch(error => {
+                    console.error('Грешка:', error);
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
+                    alertDiv.innerHTML = `
+                        Възникна грешка при изпращането на отзива. Моля, опитайте отново.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+                    reviewForm.parentNode.insertBefore(alertDiv, reviewForm);
+                });
+            });
+        });
     </script>
 </body>
 </html> 

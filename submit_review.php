@@ -65,7 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         echo json_encode(['success' => true, 'message' => 'Отзивът е добавен успешно']);
     } catch(PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Грешка при запис на отзива']);
+        error_log("Database Error: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Грешка при запис на отзива: ' . $e->getMessage()]);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Невалиден метод на заявка']);
